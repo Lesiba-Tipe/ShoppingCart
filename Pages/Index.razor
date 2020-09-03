@@ -1,7 +1,69 @@
 ﻿@page "/"
+System.Diagnostics.Debug.WriteLine
+<div class="container">
+    @using ShoppingCart.Data
 
-<h1>Hello, world!</h1>
+    <p>List of Items</p>
 
-Welcome to your new app.
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Items)
+            {
+                <tr>
+                    <td>@item.name</td>
+                    <td>@item.description</td>
+                    <td>@item.price</td>
+                    <td>
+                        <button type="button" @onclick="ItemClicked" class="btn btn-outline-primary btn-sm m-0 waves-effect">Add to cart</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+    <p>@itemCollections.Count</p>
+
+    @foreach (var item in itemCollections)
+    {
+        <ul>
+            <li>item.name</li>
+        </ul>
+    }
+</div>
+
+
+@code
+{
+
+    private void AddItemToCart(Item item)
+    {
+        itemCollections.Add(item);
+    }
+
+    private void ItemClicked()
+    {
+        //System.Diagnostics.Debug.WriteLine("Item clicked");
+        Console.WriteLine("Item clicked");
+    }
+
+    public static List<Item> itemCollections = new List<Item>();
+    private List<Item> Items = new List<Item>()
+{
+            new Item(){ id = 0, name = "Laptop", price = 7500, description = "visit website..."},
+            new Item(){ id = 1, name = "Hard disk", price = 1100, description = "visit website..."},
+            new Item(){ id = 2, name = "office chair", price = 600, description = "visit website..."},
+            new Item(){ id = 3, name = "tablet", price = 2100, description = "visit website..."},
+            new Item(){ id = 4, name = "power bank", price = 200, description = "visit website..."},
+            new Item(){ id = 5, name = "back pack", price = 500, description = "visit website..."}
+        };
+
+
+}
