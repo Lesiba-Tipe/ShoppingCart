@@ -1,69 +1,78 @@
-﻿@page "/"
-System.Diagnostics.Debug.WriteLine
+﻿
+@page "/"
+@inject AddItemsToCartService AddItemsToCartService
+@inject ItemService ItemService
+@inject NavigationManager NavigationManager
+@using ShoppingCart.Data
+
 <div class="container">
-    @using ShoppingCart.Data
-
-    <p>List of Items</p>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Items)
-            {
-                <tr>
-                    <td>@item.name</td>
-                    <td>@item.description</td>
-                    <td>@item.price</td>
-                    <td>
-                        <button type="button" @onclick="ItemClicked" class="btn btn-outline-primary btn-sm m-0 waves-effect">Add to cart</button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
 
 
-    <p>@itemCollections.Count</p>
 
-    @foreach (var item in itemCollections)
-    {
-        <ul>
-            <li>item.name</li>
-        </ul>
-    }
+    <div class="row" style="margin:auto">
+        <div class="col-md-12 bg-light text-right">
+            <button type="button" class="btn btn-outline-primary" @onclick="GoToCart">
+                Go to cart
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cart" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="card-columns">
+        @foreach (var item in ItemService.Items)
+        {
+            <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                <div class="card-header">@item.Name</div>
+                <div class="card-body">
+                    <h5 class="card-title">R @item.Price</h5>
+                    <p class="card-text">@item.Description</p>
+                    <button type="button" @onclick="@(() => AddItemToCart(item))"
+                            class="btn btn-outline-primary btn-sm m-0 waves-effect">
+                        Add to cart
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <p>@AddItemsToCartService.ItemsInCart.Count</p>
+
 </div>
 
 
 @code
 {
 
+    private void GoToCart()
+    {
+
+        if (AddItemsToCartService.ItemsInCart.Count <= 0)
+        {
+            //Alet user that the cart is empty
+
+        }
+        else
+        {
+            NavigationManager.NavigateTo("cart");
+        }
+    }
+
     private void AddItemToCart(Item item)
     {
-        itemCollections.Add(item);
-    }
+        var addItermInCart = AddItemsToCartService.ItemsInCart.Where(i => i.ItemId == item.Id).SingleOrDefault();
 
-    private void ItemClicked()
-    {
-        //System.Diagnostics.Debug.WriteLine("Item clicked");
-        Console.WriteLine("Item clicked");
+        if (addItermInCart == null )
+        {
+            AddItemsToCartService.ItemsInCart.Add(new AddItemsToCart() { ItemId = item.Id,Quantity = 1 });
+        }
+        else
+        {
+            AddItemsToCartService.ItemsInCart.Where(i => i.ItemId == item.Id).Select(quantity => { quantity.Quantity++; return quantity; }).ToList();
+        }
     }
-
-    public static List<Item> itemCollections = new List<Item>();
-    private List<Item> Items = new List<Item>()
-{
-            new Item(){ id = 0, name = "Laptop", price = 7500, description = "visit website..."},
-            new Item(){ id = 1, name = "Hard disk", price = 1100, description = "visit website..."},
-            new Item(){ id = 2, name = "office chair", price = 600, description = "visit website..."},
-            new Item(){ id = 3, name = "tablet", price = 2100, description = "visit website..."},
-            new Item(){ id = 4, name = "power bank", price = 200, description = "visit website..."},
-            new Item(){ id = 5, name = "back pack", price = 500, description = "visit website..."}
-        };
 
 
 }
