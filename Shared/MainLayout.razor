@@ -1,12 +1,31 @@
 ﻿@inherits LayoutComponentBase
+<!-- Sidebar -->
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:0%">
 
+</div>
 
+<div class="container" style="background-color:#4e4d4d; color:#e5e3e3;" font>
+    <div class="main">
 
-<div class="main" style="background-color:#4e4d4d; color:#e5e3e3" font>
-    <div class="container" style="text-align:center" >
-        <h2>Bizzer online shopping</h2>
+        <div class="container" style="text-align:center">
+            <h2>Bizzer online shopping</h2>
+        </div>
+
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="nav-link active" href="#">
+                <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-house-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M8 3.293l6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
+                    <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z" />
+                </svg>
+            </a>
+        </nav>
+
+        <div class="content px-4">
+            @Body
+        </div>
     </div>
-    <div class="content px-4">
-        @Body
-    </div>
+    <br />
+    <footer>
+        <p style="text-align:center">&copy; 2020 - Moshweu Lesiba</p>
+    </footer>
 </div>

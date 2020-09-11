@@ -16,5 +16,4 @@ namespace ShoppingCart.Data
     {
         public List<AddItemsToCart> ItemsInCart = new List<AddItemsToCart>();
     }
-
 }
