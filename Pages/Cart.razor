@@ -19,12 +19,6 @@
             @{
                 foreach (var itemInCart in AddItemsToCartService.ItemsInCart)
                 {
-                    //var item = new Item()
-                    //{
-                    //    Id = itemInCart.ItemId,
-                    //    Name = ItemService.Items.Where(itemId => itemId.Id == itemInCart.ItemId).Select(name => name.Name).FirstOrDefault(),
-                    //    Price = ItemService.Items.Where(itemId => itemId.Id == itemInCart.ItemId).Select(price => price.Price).FirstOrDefault()
-                    //};
                     var item = ItemService.Items.Where(id => id.Id == itemInCart.ItemId).SingleOrDefault();
                     var amount = item.Price * itemInCart.Quantity;
                     <tr>
