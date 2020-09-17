@@ -5,30 +5,31 @@
 @inject ItemService ItemService
 
 <div class="container">
-    <table class="table" style="color: #e5e3e3;">
+   <table class="table">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Name</th>
-                <th>Qantity</th>
+                <th>Quantity</th>
                 <th>Unit Price</th>
                 <th>Amount</th>
                 <th></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody style="background-color:#797777; color:#090909">
             @{
                 foreach (var itemInCart in AddItemsToCartService.ItemsInCart)
                 {
-                    var item = ItemService.Items.Where(id => id.Id == itemInCart.ItemId).SingleOrDefault();
+                     var item = ItemService.Items.Where(id => id.Id == itemInCart.ItemId).SingleOrDefault();
                     var amount = item.Price * itemInCart.Quantity;
                     <tr>
                         <td>@item.Name</td>
+
                         <td>@itemInCart.Quantity</td>
                         <td>@item.Price</td>
                         <td>@amount</td>
                         <td>
                             <button type="button" @onclick="@(() => RemoveItemFromCart(itemInCart))"
-                                    class="btn btn-outline-primary btn-sm m-0 waves-effect">
+                                    class="btn btn-primary btn-sm m-0 waves-effect">
                                 Remove from cart
                             </button>
                         </td>
@@ -38,38 +39,36 @@
         </tbody>
     </table>
 
-    <div class="row">       
 
-        <table class="table" style="color: #e5e3e3;">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Order:</th>
-                    <th>Amount:</th>
-                    <th>Date:</th>
-                    <th></th>
-                </tr>
-            </thead>
 
-            <tbody>
-                <tr>
-                    <td>@random.Next(10000, 99999)</td>
-                    @{
-                        decimal totalCost = 0;
+    <table class="table" style="width:50%">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Order:</th>
+                <th>Total Amount:</th>
+            </tr>
+        </thead>
 
-                        foreach (var itemInCart in AddItemsToCartService.ItemsInCart)
-                        {
-                            var item = ItemService.Items.Where(id => id.Id == itemInCart.ItemId).SingleOrDefault();
-                            totalCost += itemInCart.Quantity * item.Price;
-                        }
+        <tbody style="background-color:#797777; color:#090909">
+            <tr>
+                <td>@random.Next(10000, 99999)</td>
+                @{
+                    decimal totalCost = 0;
 
-                        <td>@totalCost</td>
+                    foreach (var itemInCart in AddItemsToCartService.ItemsInCart)
+                    {
+                        var item = ItemService.Items.Where(id => id.Id == itemInCart.ItemId).SingleOrDefault();
+                        totalCost += itemInCart.Quantity * item.Price;
                     }
-                    <td>@DateTime.Now</td>
 
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                    <td>@totalCost</td>
+                }
+
+            </tr>
+        </tbody>
+    </table>
+
+    
 </div>
 
 
@@ -82,6 +81,11 @@
     private void RemoveItemFromCart(AddItemsToCart removeItem)
     {
         AddItemsToCartService.ItemsInCart.Remove(removeItem);
+    }
+
+    private void ShowOrder()
+    {
+
     }
 
 }
