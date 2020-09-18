@@ -27,7 +27,6 @@
 
                         <td>
                             @itemInCart.Quantity
-                          
                         </td>
                         <td>@item.Price</td>
                         <td>@amount</td>
@@ -75,7 +74,6 @@
 @code
 {
     private Random random = new Random();
-    private int quantity;
     private void RemoveItemFromCart(ItemGroup removeItem)
     {
         CartService.Cart.Remove(removeItem);
