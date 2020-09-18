@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ShoppingCart.Data;
+using ShoppingCart.Services;
 
 namespace ShoppingCart
 {
@@ -27,7 +27,7 @@ namespace ShoppingCart
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<AddItemsToCartService>();
+            services.AddSingleton<CartService>();
             services.AddSingleton<ItemService>();
         }
 

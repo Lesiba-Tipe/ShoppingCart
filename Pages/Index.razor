@@ -1,6 +1,7 @@
 ﻿
 @page "/"
-@inject AddItemsToCartService AddItemsToCartService
+@using ShoppingCart.Services
+@inject CartService CartService
 @inject ItemService ItemService
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime;
@@ -15,7 +16,7 @@
             <button type="button" class="btn btn-primary" @onclick="GoToCart">
                 @{                   
                     int numberOfItemsInCart = 0;
-                    foreach (var x in AddItemsToCartService.ItemsInCart)
+                    foreach (var x in CartService.Cart)
                     {
                         numberOfItemsInCart += x.Quantity;
                     }
@@ -51,11 +52,11 @@
 
 @code
 {
-   
+
     private void GoToCart()
     {
 
-        if (AddItemsToCartService.ItemsInCart.Count <= 0)
+        if (CartService.Cart.Count <= 0)
         {
             //Alet user that the cart is empty
 
@@ -68,15 +69,15 @@
 
     private void AddItemToCart(Item item)
     {
-        var addItermInCart = AddItemsToCartService.ItemsInCart.Where(i => i.ItemId == item.Id).SingleOrDefault();
+        var addItermInCart = CartService.Cart.Where(i => i.ItemId == item.Id).SingleOrDefault();
 
         if (addItermInCart == null)
         {
-            AddItemsToCartService.ItemsInCart.Add(new AddItemsToCart() { ItemId = item.Id, Quantity = 1 });
+            CartService.Cart.Add(new ItemGroup() { ItemId = item.Id, Quantity = 1 });
         }
         else
         {
-            AddItemsToCartService.ItemsInCart.Where(i => i.ItemId == item.Id).Select(quantity => { quantity.Quantity++; return quantity; }).ToList();
+            CartService.Cart.Where(i => i.ItemId == item.Id).Select(quantity => { quantity.Quantity++; return quantity; }).ToList();
         }
     }
 

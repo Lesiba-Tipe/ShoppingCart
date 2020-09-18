@@ -1,11 +1,12 @@
-﻿
-@page "/cart"
+﻿@page "/cart"
+@inject NavigationManager NavigationManager
 @using ShoppingCart.Data
-@inject ShoppingCart.Data.AddItemsToCartService AddItemsToCartService
+@using ShoppingCart.Services
+@inject CartService CartService
 @inject ItemService ItemService
 
 <div class="container">
-   <table class="table">
+    <table class="table">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Name</th>
@@ -17,14 +18,17 @@
         </thead>
         <tbody style="background-color:#797777; color:#090909">
             @{
-                foreach (var itemInCart in AddItemsToCartService.ItemsInCart)
+                foreach (var itemInCart in CartService.Cart)
                 {
-                     var item = ItemService.Items.Where(id => id.Id == itemInCart.ItemId).SingleOrDefault();
+                    var item = ItemService.Items.Where(id => id.Id == itemInCart.ItemId).SingleOrDefault();
                     var amount = item.Price * itemInCart.Quantity;
                     <tr>
                         <td>@item.Name</td>
 
-                        <td>@itemInCart.Quantity</td>
+                        <td>
+                            @itemInCart.Quantity
+                          
+                        </td>
                         <td>@item.Price</td>
                         <td>@amount</td>
                         <td>
@@ -38,8 +42,6 @@
             }
         </tbody>
     </table>
-
-
 
     <table class="table" style="width:50%">
         <thead class="thead-dark">
@@ -55,7 +57,7 @@
                 @{
                     decimal totalCost = 0;
 
-                    foreach (var itemInCart in AddItemsToCartService.ItemsInCart)
+                    foreach (var itemInCart in CartService.Cart)
                     {
                         var item = ItemService.Items.Where(id => id.Id == itemInCart.ItemId).SingleOrDefault();
                         totalCost += itemInCart.Quantity * item.Price;
@@ -63,31 +65,27 @@
 
                     <td>@totalCost</td>
                 }
-
             </tr>
         </tbody>
     </table>
 
-    
+    <a type="button" @onclick="@ConfirmOrder" class="btn btn-primary">Checkout</a>
 </div>
-
-
-
 
 @code
 {
     private Random random = new Random();
-
-    private void RemoveItemFromCart(AddItemsToCart removeItem)
+    private int quantity;
+    private void RemoveItemFromCart(ItemGroup removeItem)
     {
-        AddItemsToCartService.ItemsInCart.Remove(removeItem);
+        CartService.Cart.Remove(removeItem);
     }
 
-    private void ShowOrder()
+    private void ConfirmOrder()
     {
+        NavigationManager.NavigateTo("checkout");
+        CartService.Cart.Clear();
 
     }
 
 }
-
-
